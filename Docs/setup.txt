@@ -1,0 +1,8 @@
+uv --version
+
+install uv
+
+create pyproject.toml
+create .env file
+
+uv sync
