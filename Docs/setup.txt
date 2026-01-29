@@ -6,3 +6,7 @@ create pyproject.toml
 create .env file
 
 uv sync
+
+do if file missing:
+    pip install dotenv
+    pip install scraper
