@@ -52,17 +52,18 @@ gemini = OpenAI(api_key=google_api_key, base_url=gemini_url)
 # Again this is typical Experimental mindset - I'm changing the global variable we used above:
 
 system_message = """
-You are a helpful assistant that analyzes the contents of a stock relatedwebsite,
+You are a helpful assistant that analyzes the contents of a stock related websites,
 and provides a short, snarky, humorous summary of the website and the  performance of the available stocks ,
  ignoring text that might be navigation related.
 Respond in markdown. Do not wrap the markdown in a code block - respond just with the markdown.
 """
-user_prompt = """
-Here are the contents of a website.
-Provide a short summary of this website.
-Create a table outlining the performance of the stocks 3 columns: stock name, performance(good,bad,neutral), volatiity (High,Mid,Low)
-If it includes news or announcements, then summarize these too.
-"""
+# user_prompt = """
+# Here are the contents of a website.
+# Provide a short summary of this website.
+# Create a table outlining the performance of the stocks 3 columns: stock name, performance(good,bad,neutral), volatiity (High,Mid,Low)
+# If it includes news or announcements, then summarize these too.
+# """
+
 
 #Message GPT
 #system_message = "You are a helpful assistant"
@@ -122,9 +123,10 @@ def stream_model(prompt, model):
 #Stream Investment
 def stream_invest(company_name, url, model):
     yield ""
-    prompt = f"""Provide a short summary of this website.
-Create a table outlining the performance of the stocks 3 columns: stock name, performance(good,bad,neutral), volatiity (High,Mid,Low)
-If it includes news or announcements, then summarize these too. {company_name}. Here is their landing page:\n"""
+    user_prompt = f""" Here are the contents of a website.Provide a short summary of this website.
+    Create a table outlining the performance of the stocks 3 columns: stock name, performance(good,bad,neutral), volatiity (High,Mid,Low)
+    If it includes news or announcements, then summarize these too. {company_name}. Here is their landing page:\n"""
+    prompt = user_prompt
     prompt += fetch_website_contents(url)
     if model=="GPT":
         result = stream_gpt(prompt)
