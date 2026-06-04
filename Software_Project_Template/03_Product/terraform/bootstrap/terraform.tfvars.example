@@ -1,0 +1,7 @@
+project_name         = "caishen"
+tf_state_bucket_name = "caishen-tf-state-REPLACE_ME"
+tf_lock_table_name   = "caishen-tf-locks"
+ecr_repository_name  = "caishen-backend"
+
+shared_kb_source_bucket_name    = "caishen-REPLACE_ME-kb-source"
+shared_kb_artifacts_bucket_name = "caishen-REPLACE_ME-kb-artifacts"

@@ -1,0 +1,14 @@
+FROM public.ecr.aws/lambda/python:3.12
+
+COPY backend/requirements.txt ${LAMBDA_TASK_ROOT}/requirements.txt
+RUN pip install --no-cache-dir -r ${LAMBDA_TASK_ROOT}/requirements.txt
+
+COPY backend/app ${LAMBDA_TASK_ROOT}/app
+COPY backend/kb/raw_docs ${LAMBDA_TASK_ROOT}/kb/raw_docs
+COPY scripts/kb_build.py ${LAMBDA_TASK_ROOT}/scripts/kb_build.py
+RUN python ${LAMBDA_TASK_ROOT}/scripts/kb_build.py \
+    --input-dir ${LAMBDA_TASK_ROOT}/kb/raw_docs \
+    --output-dir ${LAMBDA_TASK_ROOT}/kb/processed_docs \
+    --metadata-dir ${LAMBDA_TASK_ROOT}/kb/metadata
+
+CMD ["app.lambda_handler.handler"]

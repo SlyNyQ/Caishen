@@ -1,92 +1,51 @@
-# Cashien
+# Caishen
 
-**Cashien** is an AI-powered investment qualifier and analysis assistant that combines **historical and current market data**, **web-sourced context**, **agentic AI workflows**, and **Retrieval-Augmented Generation (RAG)** to help users **understand stocks and investment strategies in plain English**.
+Caishen is a plain-English stock and investment-analysis assistant for non-expert retail investors. It combines current and historical market data, user-supplied public sources, deterministic calculations, retrieval-grounded educational notes, and multiple server-side LLM providers.
 
-Cashien is designed to **analyze**, **interpret**, and **explain** — not to trade, execute orders, or give guaranteed financial advice.
+Caishen is read-only. It does not connect to brokerage accounts, execute trades, guarantee outcomes, or issue personalized buy/sell instructions.
 
----
+## Product
 
-## What Cashien Does
+The working product lives in [`Software_Project_Template/03_Product`](Software_Project_Template/03_Product).
 
-Cashien acts as a **decision-support layer** for investing by:
+- FastAPI backend with `GET /health`, `GET /ready`, and `POST /chat`
+- `yfinance` market snapshots, return comparisons, and annualized volatility
+- Guarded public URL summarization with private-network blocking and content limits
+- OpenAI, Anthropic, Google, Bedrock, and deterministic mock provider adapters
+- Local Markdown RAG notes for investment basics, risk, methods, freshness, and safety
+- Responsive Next.js research workspace with context controls and structured insights
+- AWS Lambda, API Gateway, S3, and CloudFront Terraform stack
 
-- Scraping and summarizing stock-related websites
-- Interpreting stock performance and volatility
-- Translating market signals into **layman-friendly explanations**
-- Generating **strategy options** based on user intent (risk tolerance, horizon, goals)
-- Supporting **multiple LLM providers** (OpenAI, Anthropic, Google)
-- Laying the groundwork for **agentic AI + RAG-based reasoning**
+## Local Start
 
-The current prototype focuses on **web-based stock analysis**, with a clear path toward deeper market data ingestion and portfolio-level reasoning.
+```powershell
+cd Software_Project_Template\03_Product
+uv venv .venv --python 3.12
+uv pip install --python .venv\Scripts\python.exe -r backend\requirements.dev.txt
+.\.venv\Scripts\python.exe scripts\kb_build.py
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --reload
+```
 
----
+In a second terminal:
 
-## What Cashien Is *Not*
+```powershell
+cd Software_Project_Template\03_Product\frontend
+npm install
+npm run dev
+```
 
-- ❌ Not a brokerage  
-- ❌ Not a trading bot  
-- ❌ Not an execution engine  
-- ❌ Not guaranteed to be correct  
+Open `http://127.0.0.1:3000`.
 
-Cashien **does not place trades** and **does not manage money**.  
-It exists to **help humans think better**, not to replace professional judgment.
+## Verification
 
----
+```powershell
+cd Software_Project_Template\03_Product
+.\.venv\Scripts\python.exe -m pytest backend -q
+.\.venv\Scripts\python.exe scripts\eval_run_rag.py --require-citations
+cd frontend
+npm test
+npm run build
+npm run test:e2e
+```
 
-## Current Prototype Overview
-
-The current prototype consists of:
-
-- A **web scraper** that extracts readable stock-related content from public websites
-- A **Gradio UI** for interactive analysis
-- **Streaming LLM responses** from multiple providers
-- Markdown-formatted analytical summaries with tables
-
-### Key Files
-
-- `prototype.py` — main application, UI, and LLM orchestration
-- `scraper.py` — website scraping and content extraction logic
-- `requirements.txt` — pip dependency list
-- `pyproject.toml` — project metadata and dependency definition
-
----
-
-## Supported LLM Providers
-
-Cashien is **provider-agnostic by design**.
-
-Currently supported:
-
-- **OpenAI** (default in prototype)
-- **Anthropic (Claude)**
-- **Google Gemini**
-
-The active model is selected dynamically at runtime.
-
----
-
-## ⚠️ API Keys Required (Mandatory)
-
-**Cashien will NOT run without your own API keys.**
-
-This is intentional and non-negotiable.
-
-You must supply your own keys for:
-
-- LLM providers (OpenAI, Anthropic, Google)
-- Future: market data providers, news APIs, vector databases
-
-Cashien does **not**:
-- ship with API keys
-- bundle credentials
-- hide usage costs
-- proxy billing through the project
-
----
-
-## Environment Setup
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/<your-username>/Cashien.git
-cd Cashien
+Provider credentials belong only in an ignored `backend/.env`; use the sanitized examples as a starting point.

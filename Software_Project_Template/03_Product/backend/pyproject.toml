@@ -1,7 +1,35 @@
 [project]
 name = "caishen"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+version = "1.0.0"
+description = "Read-only market research and educational investment analysis API."
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+  "anthropic>=0.49,<1",
+  "beautifulsoup4>=4.13,<5",
+  "boto3>=1.37,<2",
+  "fastapi>=0.116,<1",
+  "google-generativeai>=0.8,<1",
+  "mangum>=0.19,<1",
+  "openai>=1.97,<2",
+  "pandas>=2.0,<3",
+  "pydantic>=2.10,<3",
+  "python-dotenv>=1.0,<2",
+  "requests>=2.32,<3",
+  "uvicorn[standard]>=0.33,<1",
+  "yfinance>=1.1,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28,<1",
+  "pytest>=8.3,<9",
+  "ruff>=0.14,<1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

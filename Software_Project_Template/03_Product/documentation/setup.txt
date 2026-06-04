@@ -1,12 +1,21 @@
-uv --version
+CAISHEN LOCAL SETUP
 
-install uv
+1. From 03_Product, create Python 3.12 environment:
+   uv venv .venv --python 3.12
+   uv pip install --python .venv\Scripts\python.exe -r backend\requirements.dev.txt
 
-create pyproject.toml
-create .env file
+2. Copy backend\.env.example to backend\.env and add only the server-side provider keys you need.
 
-uv sync
+3. Build the local knowledge base:
+   .\.venv\Scripts\python.exe scripts\kb_build.py
 
-do if file missing:
-    pip install dotenv
-    pip install scraper
+4. Start FastAPI:
+   .\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --reload
+
+5. In frontend, run:
+   npm install
+   npm run dev
+
+6. Open http://127.0.0.1:3000
+
+Use the mock provider for deterministic offline behavior. Public URL analysis requires network access. Caishen never executes trades.
